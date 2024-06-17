@@ -13,7 +13,8 @@ class TestMol(unittest.TestCase):
 
         #smiles = "CCO"
         
-        smiles = "CC=CCC=CCCCC=CC"
+        #smiles = "CC=CCC=CCCCC=CC"
+        smiles = "CC(C)CCCC(C)C1CCC2C1(CCC3C2CCC4=C3C=CC=C4)C"
         self.molecule = Chem.MolFromSmiles(smiles)
 
         # Print canonical SMILES
@@ -23,13 +24,17 @@ class TestMol(unittest.TestCase):
     def tearDown(self):
         pass
 
-    @unittest.skip("Skipping find allylic carbons test")
+    #@unittest.skip("Skipping find allylic carbons test")
     def test_Draw(self):
         # Draw the molecule
         img = Draw.MolToImage(self.molecule)
 
         # Display the image (works well in Jupyter notebooks)
         img.show()
+    def test_tert(self):
+        
+        print(molecule.getTertiary(self.molecule))
+        
 
     
 

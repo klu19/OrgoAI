@@ -8,7 +8,7 @@ from apply import *
 def allylic_carbons(mol):
     allylic_carbons = []
     
-    
+
     for atom in mol.GetAtoms():
         if atom.GetAtomicNum() == 6 and str(atom.GetHybridization()) == "SP3":  #target atom is carbon and sp3
             for neighbor in atom.GetNeighbors():
@@ -31,4 +31,5 @@ def allylic_carbons(mol):
 
     # # Find all matches of the SMARTS pattern in the molecule
     # return mol.GetSubstructMatches(allylic_carbon_mol)
+
 

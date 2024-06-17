@@ -46,6 +46,23 @@ def getAtomInfo(mol,atom_idx):
     print("Atomic Number: " + str(atom.GetAtomicNum()))
     print("Hybridization: " + str(atom.GetHybridization()))
     print_atom_bonds(mol, atom_idx)
+
+def getTertiary(mol):
+    tertiary_carbons = []
+    for atom in mol.GetAtoms():
+        if atom.GetAtomicNum() == 6 and str(atom.GetHybridization()) == "SP3" :
+            carbon_counter = 0
+            for neighbor in atom.GetNeighbors():
+                if neighbor.GetAtomicNum() == 6:
+                    carbon_counter += 1
+            if carbon_counter == 3:
+                tertiary_carbons.append(atom.GetIdx())
+    
+    return tertiary_carbons
+                
+
+
+
     
 
     
