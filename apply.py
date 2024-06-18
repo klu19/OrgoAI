@@ -36,6 +36,7 @@ def hydrochlorination(mol,info):
     atom = mol.GetAtomWithIdx(atom_idx1)
     atom_idx2 = 0
 
+    #scuffed, just use vinylic pair
     for bond in atom.GetBonds():
         if bond.GetBondType() == Chem.rdchem.BondType.DOUBLE:
             # Get the other atom index connected by the double bond
@@ -49,6 +50,32 @@ def hydrochlorination(mol,info):
     rw_mol = break_pi_bond(rw_mol,atom_idx1, atom_idx2)
 
     return rw_mol
+
+def dichlorination(mol,info):
+    
+    vinylic_pairs = info.get_vinylic_pairs()
+
+    # Convert set to list (since sets do not support indexing)
+    pairs_list = list(vinylic_pairs)
+
+    # Randomly pick one vinylic pair index
+    pair_to_modify = random.choice(pairs_list)
+
+    atom_idx1 = pair_to_modify[0]
+
+    atom_idx2 = pair_to_modify[1]
+    # Convert to RWMol (a modifiable molecule)
+    rw_mol = Chem.RWMol(mol)
+    rw_mol = chlorinate_atom(rw_mol, atom_idx1,1)
+    rw_mol = chlorinate_atom(rw_mol, atom_idx2,2)
+
+    rw_mol = break_pi_bond(rw_mol,atom_idx1, atom_idx2)
+
+    return rw_mol
+
+
+
+
 
 def break_pi_bond(rw_mol,atom_idx1, atom_idx2):
 
@@ -66,8 +93,8 @@ def break_pi_bond(rw_mol,atom_idx1, atom_idx2):
     Chem.SanitizeMol(rw_mol)
     return rw_mol
 
-def chlorinate_atom(rw_mol,atom_idx):
- 
+def chlorinate_atom(rw_mol,atom_idx,bondir = 0):
+    
    
     # Create a new bromine atom
     cl_atom = Chem.Atom(17)  # Atomic number for Chlorine is 17
@@ -77,6 +104,20 @@ def chlorinate_atom(rw_mol,atom_idx):
     
     # Create a bond between the existing atom and the new bromine atom
     rw_mol.AddBond(atom_idx, cl_idx, rdchem.BondType.SINGLE)
+
+    bond = rw_mol.GetBondBetweenAtoms(atom_idx, cl_idx)
+
+    match bondir: 
+        case 1 :
+            # Modify the bond to be drawn as a wedge (up) or dash (down)
+            print("enntered this one")
+            bond.SetBondDir(Chem.rdchem.BondDir.ENDUPRIGHT) # Wedge (up) direction
+        case 2 :
+
+            print("then this one")
+            bond.SetBondDir(Chem.rdchem.BondDir.ENDDOWNRIGHT)  # Dash (down) direction
+        case _:
+            pass
     
     # Return the modified molecule
     return rw_mol
