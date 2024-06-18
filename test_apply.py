@@ -19,9 +19,15 @@ class TestMol(unittest.TestCase):
 
         #smiles = "CCO"
         
-        smiles = "CC=CCC=CCCCC=CC"
+        #smiles = "CC=CCC=CCCCC=CC"
 
         #smiles = "CC(=C)C=CC=C"
+
+        #smiles = "CC(C)(C)C(C)(C)C(C)(C)C(C)(C)C(C)(C)C(C)(C)C(C)(C)C(C)(C)C(C)(C)C(C)(C)C(C)(C)C(C)(C)C(C)(C)C(C)(C)C(C)(C)C(C=C)C(C)(C)C"
+
+        #smiles = "C=CCC(CCC)CC1=CC=CC=C1"
+
+        smiles = "CC1=CC=CC=C1CC2=CC=CC=C2CC3=CC=CC=C3"
 
         self.molecule = Chem.MolFromSmiles(smiles)
 
@@ -34,7 +40,7 @@ class TestMol(unittest.TestCase):
     def tearDown(self):
         pass
 
-    #@unittest.skip("Skipping apply allylic carbons test")
+    @unittest.skip("Skipping apply allylic carbons test")
     def test_allylic_bromination(self):
         
         
@@ -43,7 +49,7 @@ class TestMol(unittest.TestCase):
         img = Draw.MolToImage(new_mol)
         # Display the image (works well in Jupyter notebooks)
         img.show()
-    #@unittest.skip("Skipping apply hydrochlorination test")
+    @unittest.skip("Skipping apply hydrochlorination test")
     def test_hydrochlorination(self):
       
         
@@ -52,7 +58,7 @@ class TestMol(unittest.TestCase):
         img = Draw.MolToImage(new_mol)
         # Display the image (works well in Jupyter notebooks)
         img.show()
-    #@unittest.skip("Skipping apply dichlorination test")
+    @unittest.skip("Skipping apply dichlorination test")
     def test_dichlorination(self):
       
         

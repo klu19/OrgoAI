@@ -10,6 +10,7 @@ class molinfo:
         self.mol = mol
         self.allylic_carbons = []
         self.vinylic_carbons = []
+        self.benzylic_carbons = []
         self.vinylic_pairs = set()
 
         self.primary_carbons_sp2 = []
@@ -22,10 +23,14 @@ class molinfo:
         self.tertiary_carbons_sp3 = []
         self.most_to_least_sp3 = []
 
+        
+        self.descending_rad = []
+
         self.collectinfo()
         self.find_most_to_least_sub_sp2()
         self.find_most_to_least_sub_sp3()
         self.find_benzylic_carbons()
+        self.find_descending_rad()
         
         
         
@@ -111,7 +116,11 @@ class molinfo:
         
         return self.most_to_least_sp3
 
+    def get_descending_rad(self):
 
+        return self.descending_rad
+    
+    
     #Finders
     def find_most_to_least_sub_sp2(self):
         self.most_to_least_sp2 = self.tertiary_carbons_sp2 + self.secondary_carbons_sp2 + self.primary_carbons_sp2
@@ -120,6 +129,9 @@ class molinfo:
     def find_most_to_least_sub_sp3(self):
         self.most_to_least_sp3 = self.tertiary_carbons_sp3 + self.secondary_carbons_sp3 + self.primary_carbons_sp3
 
+    def find_descending_rad(self):
+        self.descending_rad =  self.benzylic_carbons + self.allylic_carbons + self.most_to_least_sp3
+        print(type(self.descending_rad))
 
     def find_benzylic_carbons(self):
         # SMARTS pattern for benzylic carbon
@@ -127,10 +139,12 @@ class molinfo:
 
         # Find substructure matches
         matches = self.mol.GetSubstructMatches(benzylic_pattern)
+        print(type(matches))
+        self.benzylic_carbons = [item for sublist in matches for item in sublist]
 
-        print(len(matches))
-        for match in matches:
-            print(f"Benzylic carbon found at atom index: {match[0]}")
+        print(self.benzylic_carbons)
+
+        #print(type(self.benzylic_carbons))
 
 
     

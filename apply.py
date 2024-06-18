@@ -24,11 +24,11 @@ def allylic_bromination(mol, info):
 
 def radical_halogenation(mol, info, halo):
 
-    most_to_least = info.get_most_to_least_sub_sp3()
-
+    most_to_least = info.get_descending_rad()
+    print(most_to_least)
     #assumes there is a reactive site
     atom_idx = most_to_least[0]
-
+    
     # Convert to RWMol (a modifiable molecule)
     rw_mol = Chem.RWMol(mol)
 
