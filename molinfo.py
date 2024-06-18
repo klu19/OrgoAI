@@ -10,7 +10,8 @@ class molinfo:
         self.mol = mol
         self.allylic_carbons = []
         self.vinylic_carbons = []
-        
+        self.vinylic_pairs = set()
+
         self.primary_carbons = []
         self.secondary_carbons = []
         self.tertiary_carbons = []
@@ -48,14 +49,16 @@ class molinfo:
 
                     #check if neighbor is a carbon, if the bond type is double
                     if neighbor.GetAtomicNum() == 6 and bond.GetBondType() == Chem.rdchem.BondType.DOUBLE:
-                
+                        vinylic_pair = (min(atom.GetIdx(),neighbor.GetIdx()), max(atom.GetIdx(),neighbor.GetIdx()))
+                        self.vinylic_pairs.add(vinylic_pair)
                         self.vinylic_carbons.append(atom.GetIdx())
+                        #self.vinylic_carbons.append(neighbor.GetIdx())
 
-                        for neighbor in atom.GetNeighbors():
+                        for neighbor2 in atom.GetNeighbors():
                             
-                            if neighbor.GetAtomicNum() == 6 and str(neighbor.GetHybridization()) == "SP3":
+                            if neighbor2.GetAtomicNum() == 6 and str(neighbor2.GetHybridization()) == "SP3":
 
-                                self.allylic_carbons.append(neighbor.GetIdx())
+                                self.allylic_carbons.append(neighbor2.GetIdx())
 
     #Getters
     def get_allylic_carbons(self):
@@ -65,6 +68,9 @@ class molinfo:
     def get_vinylic_carbons(self):
 
         return self.vinylic_carbons
+
+    def get_vinylic_pairs(self):
+        return self.vinylic_pairs
 
     def get_tertiary_carbons(self):
 

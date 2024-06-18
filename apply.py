@@ -30,6 +30,7 @@ def hydrochlorination(mol,info):
     intersection = list(collections.Counter(vinylic_carbons) & collections.Counter(most_to_least))
 
     print(vinylic_carbons)
+    print(info.get_vinylic_pairs())
     print(most_to_least)
     atom_idx1 = intersection[0]
     atom = mol.GetAtomWithIdx(atom_idx1)
