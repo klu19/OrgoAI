@@ -20,9 +20,9 @@ def allylic_bromination(mol, info):
     # Convert to RWMol (a modifiable molecule)
     rw_mol = Chem.RWMol(mol)
 
-    return brominate_atom(rw_mol,atom_to_modify)
+    return add_atom(rw_mol,atom_to_modify,35,1)
 
-def radical_bromination(mol, info):
+def radical_halogenation(mol, info, halo):
 
     most_to_least = info.get_most_to_least_sub_sp3()
 
@@ -32,11 +32,11 @@ def radical_bromination(mol, info):
     # Convert to RWMol (a modifiable molecule)
     rw_mol = Chem.RWMol(mol)
 
-    rw_mol = brominate_atom(rw_mol, atom_idx)
+    rw_mol = add_atom(rw_mol, atom_idx, halo, 1) #halogenate
 
     return rw_mol
 
-def hydrochlorination(mol,info):
+def hydrohalogenation(mol,info,halo):
     vinylic_carbons = info.get_vinylic_carbons()
 
     most_to_least = info.get_most_to_least_sub_sp2()
@@ -59,14 +59,14 @@ def hydrochlorination(mol,info):
     # Convert to RWMol (a modifiable molecule)
     rw_mol = Chem.RWMol(mol)
 
-    rw_mol = chlorinate_atom(rw_mol, atom_idx1)
+    rw_mol = add_atom(rw_mol, atom_idx1,halo, 1)
 
     rw_mol = break_pi_bond(rw_mol,atom_idx1, atom_idx2)
 
     return rw_mol
 
-def dichlorination(mol,info):
-    
+def dihalogenation(mol,info,halo):
+
     vinylic_pairs = info.get_vinylic_pairs()
 
     # Convert set to list (since sets do not support indexing)
@@ -80,8 +80,8 @@ def dichlorination(mol,info):
     atom_idx2 = pair_to_modify[1]
     # Convert to RWMol (a modifiable molecule)
     rw_mol = Chem.RWMol(mol)
-    rw_mol = chlorinate_atom(rw_mol, atom_idx1,1)
-    rw_mol = chlorinate_atom(rw_mol, atom_idx2,2)
+    rw_mol = add_atom(rw_mol, atom_idx1, halo, 1) #chlorinate
+    rw_mol = add_atom(rw_mol, atom_idx2, halo,1) #chlorinate
 
     rw_mol = break_pi_bond(rw_mol,atom_idx1, atom_idx2)
 
@@ -103,45 +103,38 @@ def break_pi_bond(rw_mol,atom_idx1, atom_idx2):
     Chem.SanitizeMol(rw_mol)
     return rw_mol
 
-def chlorinate_atom(rw_mol,atom_idx,bondir = 0):
-    
-   
-    # Create a new bromine atom
-    cl_atom = Chem.Atom(17)  # Atomic number for Chlorine is 17
-    
-    # Add the bromine atom to the molecule
-    cl_idx = rw_mol.AddAtom(cl_atom)
-    
-    # Create a bond between the existing atom and the new bromine atom
-    rw_mol.AddBond(atom_idx, cl_idx, rdchem.BondType.SINGLE)
+#bond direction, else is obsolete
 
-    bond = rw_mol.GetBondBetweenAtoms(atom_idx, cl_idx)
 
-    match bondir: 
-        case 1 :
-            # Modify the bond to be drawn as a wedge (up) or dash (down)
-            print("enntered this one")
-            bond.SetBondDir(Chem.rdchem.BondDir.ENDUPRIGHT) # Wedge (up) direction
-        case 2 :
+#     bond = rw_mol.GetBondBetweenAtoms(atom_idx, cl_idx)
 
-            print("then this one")
-            bond.SetBondDir(Chem.rdchem.BondDir.ENDDOWNRIGHT)  # Dash (down) direction
-        case _:
-            pass
-    
-    # Return the modified molecule
-    return rw_mol
+#     match bondir: 
+#         case 1 :
+#             # Modify the bond to be drawn as a wedge (up) or dash (down)
+#             print("enntered this one")
+#             bond.SetBondDir(Chem.rdchem.BondDir.ENDUPRIGHT) # Wedge (up) direction
+#         case 2 :
 
-def brominate_atom(rw_mol, atom_idx):
+#             print("then this one")
+#             bond.SetBondDir(Chem.rdchem.BondDir.ENDDOWNRIGHT)  # Dash (down) direction
+#         case _:
+#             pass
 
-    # Create a new bromine atom
-    br_atom = Chem.Atom(35)  # Atomic number for Bromine is 35
-    
-    # Add the bromine atom to the molecule
-    br_idx = rw_mol.AddAtom(br_atom)
-    
-    # Create a bond between the existing atom and the new bromine atom
-    rw_mol.AddBond(atom_idx, br_idx, rdchem.BondType.SINGLE)
-    
-    # Return the modified molecule
+
+def add_atom(rw_mol, atom_idx, new_atomic_num, bond):
+
+    new_atom = Chem.Atom(new_atomic_num)
+
+    new_atom_idx = rw_mol.AddAtom(new_atom)
+
+    # Create a bond between the existing atom and the new atom
+    btype = rdchem.BondType.SINGLE
+    match bond:
+        case 1: btype = rdchem.BondType.SINGLE
+        case 2: btype = rdchem.BondType.DOUBLE
+        case 3: btype = rdchem.BondType.TRIPLE
+        case _: pass
+
+    rw_mol.AddBond(atom_idx, new_atom_idx, btype)
+
     return rw_mol

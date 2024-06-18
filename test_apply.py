@@ -34,7 +34,7 @@ class TestMol(unittest.TestCase):
     def tearDown(self):
         pass
 
-    @unittest.skip("Skipping apply allylic carbons test")
+    #@unittest.skip("Skipping apply allylic carbons test")
     def test_allylic_bromination(self):
         
         
@@ -43,20 +43,20 @@ class TestMol(unittest.TestCase):
         img = Draw.MolToImage(new_mol)
         # Display the image (works well in Jupyter notebooks)
         img.show()
-    @unittest.skip("Skipping apply hydrochlorination test")
+    #@unittest.skip("Skipping apply hydrochlorination test")
     def test_hydrochlorination(self):
       
         
-        new_mol = apply.hydrochlorination(self.molecule, self.mol1)
+        new_mol = apply.hydrohalogenation(self.molecule, self.mol1,17)
 
         img = Draw.MolToImage(new_mol)
         # Display the image (works well in Jupyter notebooks)
         img.show()
-    @unittest.skip("Skipping apply dichlorination test")
+    #@unittest.skip("Skipping apply dichlorination test")
     def test_dichlorination(self):
       
         
-        new_mol = apply.dichlorination(self.molecule, self.mol1)
+        new_mol = apply.dihalogenation(self.molecule, self.mol1,17)
         Draw.MolToImage(self.molecule).show()
         Draw.MolToImage(new_mol).show()
 
@@ -73,10 +73,9 @@ class TestMol(unittest.TestCase):
         # with open('molecule.svg', 'w') as f:
         #     f.write(svg)
         
-       
     def test_radical_bromination(self):
         
-        new_mol = apply.radical_bromination(self.molecule, self.mol1)
+        new_mol = apply.radical_halogenation(self.molecule, self.mol1,35)
         Draw.MolToImage(self.molecule).show()
         Draw.MolToImage(new_mol).show()
 
