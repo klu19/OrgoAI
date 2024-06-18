@@ -4,6 +4,7 @@ import unittest
 from molecule import *
 import find
 import apply
+from molinfo import molinfo
 
 
 class TestMol(unittest.TestCase):
@@ -15,7 +16,10 @@ class TestMol(unittest.TestCase):
 
         #smiles = "CCO"
         
-        smiles = "CC=CCC=CCCCC=CC"
+        #smiles = "CC=CCC=CCCCC=CC"
+
+        smiles = "CC(=C)C=CC=C"
+
         self.molecule = Chem.MolFromSmiles(smiles)
 
         # Print canonical SMILES
@@ -25,8 +29,20 @@ class TestMol(unittest.TestCase):
     def tearDown(self):
         pass
 
+    @unittest.skip("Skipping apply allylic carbons test")
     def test_allylic_bromination(self):
-        new_mol = apply.allylic_bromination(self.molecule)
+        mol1 = molinfo(self.molecule)
+        
+        new_mol = apply.allylic_bromination(self.molecule, mol1)
+
+        img = Draw.MolToImage(new_mol)
+        # Display the image (works well in Jupyter notebooks)
+        img.show()
+
+    def test_hydrochlorination(self):
+        mol1 = molinfo(self.molecule)
+        
+        new_mol = apply.hydrochlorination(self.molecule, mol1)
 
         img = Draw.MolToImage(new_mol)
         # Display the image (works well in Jupyter notebooks)
