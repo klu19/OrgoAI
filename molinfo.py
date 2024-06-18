@@ -12,13 +12,20 @@ class molinfo:
         self.vinylic_carbons = []
         self.vinylic_pairs = set()
 
-        self.primary_carbons = []
-        self.secondary_carbons = []
-        self.tertiary_carbons = []
-        self.most_to_least = []
+        self.primary_carbons_sp2 = []
+        self.secondary_carbons_sp2 = []
+        self.tertiary_carbons_sp2 = []
+        self.most_to_least_sp2 = []
+
+        self.primary_carbons_sp3 = []
+        self.secondary_carbons_sp3 = []
+        self.tertiary_carbons_sp3 = []
+        self.most_to_least_sp3 = []
 
         self.collectinfo()
-        self.find_most_to_least_sub()
+        self.find_most_to_least_sub_sp2()
+        self.find_most_to_least_sub_sp3()
+        
         
         
     def collectinfo(self):
@@ -32,14 +39,25 @@ class molinfo:
                     if neighbor.GetAtomicNum() == 6:
                         carbon_counter += 1
 
-                if carbon_counter == 1:
-                    self.primary_carbons.append(atom.GetIdx())
+                if str(atom.GetHybridization()) == "SP3":
+                    if carbon_counter == 1:
+                        self.primary_carbons_sp3.append(atom.GetIdx())
 
-                elif carbon_counter == 2: 
-                    self.secondary_carbons.append(atom.GetIdx())
+                    elif carbon_counter == 2: 
+                        self.secondary_carbons_sp3.append(atom.GetIdx())
 
-                elif carbon_counter == 3:
-                        self.tertiary_carbons.append(atom.GetIdx())
+                    elif carbon_counter == 3:
+                            self.tertiary_carbons_sp3.append(atom.GetIdx())
+                
+                elif str(atom.GetHybridization()) == "SP2":
+                    if carbon_counter == 1:
+                        self.primary_carbons_sp2.append(atom.GetIdx())
+
+                    elif carbon_counter == 2: 
+                        self.secondary_carbons_sp2.append(atom.GetIdx())
+
+                    elif carbon_counter == 3:
+                            self.tertiary_carbons_sp2.append(atom.GetIdx())
 
         
             #check for vinylic carbons 
@@ -84,14 +102,23 @@ class molinfo:
 
         return self.primary_carbons
 
-    def get_most_to_least_sub(self):
+    def get_most_to_least_sub_sp2(self):
+        
+        return self.most_to_least_sp2
 
-        return self.most_to_least
+    def get_most_to_least_sub_sp3(self):
+        
+        return self.most_to_least_sp3
 
 
     #Finders
-    def find_most_to_least_sub(self):
-        self.most_to_least = self.tertiary_carbons + self.secondary_carbons + self.primary_carbons
+    def find_most_to_least_sub_sp2(self):
+        self.most_to_least_sp2 = self.tertiary_carbons_sp2 + self.secondary_carbons_sp2 + self.primary_carbons_sp2
+
+    #Finders
+    def find_most_to_least_sub_sp3(self):
+        self.most_to_least_sp3 = self.tertiary_carbons_sp3 + self.secondary_carbons_sp3 + self.primary_carbons_sp3
+
 
 
 

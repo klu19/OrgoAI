@@ -22,10 +22,24 @@ def allylic_bromination(mol, info):
 
     return brominate_atom(rw_mol,atom_to_modify)
 
+def radical_bromination(mol, info):
+
+    most_to_least = info.get_most_to_least_sub_sp3()
+
+    #assumes there is a reactive site
+    atom_idx = most_to_least[0]
+
+    # Convert to RWMol (a modifiable molecule)
+    rw_mol = Chem.RWMol(mol)
+
+    rw_mol = brominate_atom(rw_mol, atom_idx)
+
+    return rw_mol
+
 def hydrochlorination(mol,info):
     vinylic_carbons = info.get_vinylic_carbons()
 
-    most_to_least = info.get_most_to_least_sub()
+    most_to_least = info.get_most_to_least_sub_sp2()
 
     intersection = list(collections.Counter(vinylic_carbons) & collections.Counter(most_to_least))
 
@@ -73,10 +87,6 @@ def dichlorination(mol,info):
 
     return rw_mol
 
-
-
-
-
 def break_pi_bond(rw_mol,atom_idx1, atom_idx2):
 
     # Change the bond order from double to single
@@ -123,18 +133,7 @@ def chlorinate_atom(rw_mol,atom_idx,bondir = 0):
     return rw_mol
 
 def brominate_atom(rw_mol, atom_idx):
-    """
-    Brominate the given atom in the molecule by adding a bromine (Br) atom.
-    
-    Parameters:
-    molecule (rdkit.Chem.rdchem.RWMol): The molecule to be modified.
-    atom_idx (int): The index of the atom to brominate.
-    
-    Returns:
-    rdkit.Chem.rdchem.RWMol: The modified molecule.
-    """
-    
-    
+
     # Create a new bromine atom
     br_atom = Chem.Atom(35)  # Atomic number for Bromine is 35
     

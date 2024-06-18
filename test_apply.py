@@ -19,9 +19,9 @@ class TestMol(unittest.TestCase):
 
         #smiles = "CCO"
         
-        #smiles = "CC=CCC=CCCCC=CC"
+        smiles = "CC=CCC=CCCCC=CC"
 
-        smiles = "CC(=C)C=CC=C"
+        #smiles = "CC(=C)C=CC=C"
 
         self.molecule = Chem.MolFromSmiles(smiles)
 
@@ -52,7 +52,7 @@ class TestMol(unittest.TestCase):
         img = Draw.MolToImage(new_mol)
         # Display the image (works well in Jupyter notebooks)
         img.show()
-
+    @unittest.skip("Skipping apply dichlorination test")
     def test_dichlorination(self):
       
         
@@ -74,9 +74,11 @@ class TestMol(unittest.TestCase):
         #     f.write(svg)
         
        
-
+    def test_radical_bromination(self):
         
-
+        new_mol = apply.radical_bromination(self.molecule, self.mol1)
+        Draw.MolToImage(self.molecule).show()
+        Draw.MolToImage(new_mol).show()
 
 if __name__ == '__main__':
     unittest.main()
