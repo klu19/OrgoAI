@@ -25,6 +25,7 @@ class molinfo:
         self.collectinfo()
         self.find_most_to_least_sub_sp2()
         self.find_most_to_least_sub_sp3()
+        self.find_benzylic_carbons()
         
         
         
@@ -115,11 +116,21 @@ class molinfo:
     def find_most_to_least_sub_sp2(self):
         self.most_to_least_sp2 = self.tertiary_carbons_sp2 + self.secondary_carbons_sp2 + self.primary_carbons_sp2
 
-    #Finders
+    
     def find_most_to_least_sub_sp3(self):
         self.most_to_least_sp3 = self.tertiary_carbons_sp3 + self.secondary_carbons_sp3 + self.primary_carbons_sp3
 
 
+    def find_benzylic_carbons(self):
+        # SMARTS pattern for benzylic carbon
+        benzylic_pattern = Chem.MolFromSmarts('[$([CH1][c]),$([CH2][c]),$([CH3][c])]')
+
+        # Find substructure matches
+        matches = self.mol.GetSubstructMatches(benzylic_pattern)
+
+        print(len(matches))
+        for match in matches:
+            print(f"Benzylic carbon found at atom index: {match[0]}")
 
 
     
