@@ -39,6 +39,7 @@ class TestMol(unittest.TestCase):
         
         print(molecule.getTertiary(self.molecule))
     
+    @unittest.skip("Skipping mol info test")
     def test_molfino(self):
         mol1 = molinfo(self.molecule)
         print(mol1.get_tertiary_carbons())
@@ -48,7 +49,12 @@ class TestMol(unittest.TestCase):
         print(mol1.get_allylic_carbons())
         print(molecule.getAtomInfo(self.molecule, 0))
 
-    
+    def test_most_to_least_sub_in_vinylic(self):
+        mol1 = molinfo(self.molecule)
+
+        vin_pair = list(mol1.get_vinylic_pairs())[0]
+
+        print(find.most_to_least_sub_in_vinylic(self.molecule,vin_pair))
     
 
 

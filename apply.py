@@ -25,7 +25,7 @@ def allylic_bromination(mol, info):
 def radical_halogenation(mol, info, halo):
 
     most_to_least = info.get_descending_rad()
-    print(most_to_least)
+    #print(most_to_least)
     #assumes there is a reactive site
     atom_idx = most_to_least[0]
     
@@ -43,9 +43,9 @@ def hydrohalogenation(mol,info,halo):
 
     intersection = list(collections.Counter(vinylic_carbons) & collections.Counter(most_to_least))
 
-    print(vinylic_carbons)
-    print(info.get_vinylic_pairs())
-    print(most_to_least)
+    # print(vinylic_carbons)
+    # print(info.get_vinylic_pairs())
+    # print(most_to_least)
     atom_idx1 = intersection[0]
     atom = mol.GetAtomWithIdx(atom_idx1)
     atom_idx2 = 0
@@ -84,6 +84,19 @@ def dihalogenation(mol,info,halo):
     rw_mol = add_atom(rw_mol, atom_idx2, halo,1) #chlorinate
 
     rw_mol = break_pi_bond(rw_mol,atom_idx1, atom_idx2)
+
+    return rw_mol
+
+def add_OH(rw_mol,attach_idx):
+
+    o_idx = rw_mol.AddAtom(Chem.Atom(8))  # Atomic number 8 corresponds to Oxygen (O)
+    h_idx = rw_mol.AddAtom(Chem.Atom(1))  # Atomic number 1 corresponds to Hydrogen (H)
+
+    # Add a bond between oxygen and hydrogen to form OH
+    rw_mol.AddBond(o_idx, h_idx, rdchem.BondType.SINGLE)
+
+    # Add a bond between the carbon atom and the oxygen atom
+    rw_mol.AddBond(attach_idx, o_idx, rdchem.BondType.SINGLE)
 
     return rw_mol
 
@@ -138,3 +151,5 @@ def add_atom(rw_mol, atom_idx, new_atomic_num, bond):
     rw_mol.AddBond(atom_idx, new_atom_idx, btype)
 
     return rw_mol
+
+

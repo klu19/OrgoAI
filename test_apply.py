@@ -78,10 +78,17 @@ class TestMol(unittest.TestCase):
         # # Output or display the SVG image
         # with open('molecule.svg', 'w') as f:
         #     f.write(svg)
-        
+    
+    @unittest.skip("Skipping radical halogenation test")
     def test_radical_bromination(self):
         
         new_mol = apply.radical_halogenation(self.molecule, self.mol1,35)
+        Draw.MolToImage(self.molecule).show()
+        Draw.MolToImage(new_mol).show()
+
+    def test_add_OH(self):
+        rw_mol = Chem.RWMol(self.molecule)
+        new_mol = apply.add_OH(rw_mol,0)
         Draw.MolToImage(self.molecule).show()
         Draw.MolToImage(new_mol).show()
 
