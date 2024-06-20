@@ -32,13 +32,13 @@ def has_db(atom):
 def print_atom_bonds(molecule, atom_idx):
 
     atom = molecule.GetAtomWithIdx(atom_idx)
-    print(f"Atom index {atom_idx} (Atomic number {atom.GetAtomicNum()}) bonds:")
+    #print(f"Atom index {atom_idx} (Atomic number {atom.GetAtomicNum()}) bonds:")
     for bond in atom.GetBonds():
         bond_type = bond.GetBondType()
         other_atom_idx = bond.GetOtherAtomIdx(atom_idx)
         other_atom = molecule.GetAtomWithIdx(other_atom_idx)
         other_atom_num = other_atom.GetAtomicNum()
-        print(f" - Bond type: {bond_type}, Connected to atom index: {other_atom_idx} (Atomic number {other_atom_num})")
+        #print(f" - Bond type: {bond_type}, Connected to atom index: {other_atom_idx} (Atomic number {other_atom_num})")
 
 
 def getAtomInfo(mol,atom_idx):

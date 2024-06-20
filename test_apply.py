@@ -21,13 +21,13 @@ class TestMol(unittest.TestCase):
         
         #smiles = "CC=CCC=CCCCC=CC"
 
-        #smiles = "CC(=C)C=CC=C"
+        smiles = "CC(=C)C=CC=C"
 
         #smiles = "CC(C)(C)C(C)(C)C(C)(C)C(C)(C)C(C)(C)C(C)(C)C(C)(C)C(C)(C)C(C)(C)C(C)(C)C(C)(C)C(C)(C)C(C)(C)C(C)(C)C(C)(C)C(C=C)C(C)(C)C"
 
         #smiles = "C=CCC(CCC)CC1=CC=CC=C1"
 
-        smiles = "CC1=CC=CC=C1CC2=CC=CC=C2CC3=CC=CC=C3"
+        #smiles = "CC1=CC=CC=C1CC2=CC=CC=C2CC3=CC=CC=C3"
 
         self.molecule = Chem.MolFromSmiles(smiles)
 
@@ -61,9 +61,9 @@ class TestMol(unittest.TestCase):
     @unittest.skip("Skipping apply dichlorination test")
     def test_dichlorination(self):
       
-        
-        new_mol = apply.dihalogenation(self.molecule, self.mol1,17)
         Draw.MolToImage(self.molecule).show()
+        new_mol = apply.dihalogenation(self.molecule, self.mol1,17)
+    
         Draw.MolToImage(new_mol).show()
 
         #not working
@@ -86,10 +86,21 @@ class TestMol(unittest.TestCase):
         Draw.MolToImage(self.molecule).show()
         Draw.MolToImage(new_mol).show()
 
+    @unittest.skip("Skipping add hydroxyl test")
     def test_add_OH(self):
         rw_mol = Chem.RWMol(self.molecule)
         new_mol = apply.add_OH(rw_mol,0)
         Draw.MolToImage(self.molecule).show()
+        Draw.MolToImage(new_mol).show()
+
+    #@unittest.skip("Skipping haloh test")
+    def test_halohydrin(self):
+        
+        rw_mol = Chem.RWMol(self.molecule)
+        Draw.MolToImage(self.molecule).show()
+        print(self.mol1.get_vinylic_carbons)
+        new_mol = apply.halohydrin(rw_mol,self.mol1,17)
+        
         Draw.MolToImage(new_mol).show()
 
 if __name__ == '__main__':

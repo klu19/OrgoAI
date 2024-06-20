@@ -73,6 +73,7 @@ class molinfo:
 
                     #check if neighbor is a carbon, if the bond type is double
                     if neighbor.GetAtomicNum() == 6 and bond.GetBondType() == Chem.rdchem.BondType.DOUBLE:
+                        print("found a vinylic pair")
                         vinylic_pair = (min(atom.GetIdx(),neighbor.GetIdx()), max(atom.GetIdx(),neighbor.GetIdx()))
                         self.vinylic_pairs.add(vinylic_pair)
                         self.vinylic_carbons.append(atom.GetIdx())

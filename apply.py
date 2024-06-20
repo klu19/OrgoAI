@@ -87,6 +87,26 @@ def dihalogenation(mol,info,halo):
 
     return rw_mol
 
+def halohydrin(mol, info, halo):
+    print(list(info.get_vinylic_pairs()))
+    vin_pair = list(info.get_vinylic_pairs())[0]
+
+  
+    vin_pair = find.most_to_least_sub_in_vinylic(mol, info, vin_pair)
+
+    most_atom_idx = vin_pair[0]
+
+    least_atom_idx = vin_pair[1]
+
+    rw_mol = Chem.RWMol(mol)
+
+    add_OH(rw_mol, most_atom_idx ) #add OH to most substituted
+
+    add_atom(rw_mol, least_atom_idx, halo, 1)
+
+    return rw_mol
+
+
 def add_OH(rw_mol,attach_idx):
 
     o_idx = rw_mol.AddAtom(Chem.Atom(8))  # Atomic number 8 corresponds to Oxygen (O)

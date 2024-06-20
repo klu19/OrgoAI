@@ -5,23 +5,32 @@ import random
 import molecule
 from apply import *
 
-def most_to_least_sub_in_vinylic(mol, vinylic_pair):
+def most_to_least_sub_in_vinylic(mol, info,  vinylic_pair):
     #retuns a tuple: first index is most substituted, second index is least substituted
     atom_idx1 = vinylic_pair[0]
     atom_idx2 = vinylic_pair[1]
     
     atom1 = mol.GetAtomWithIdx(atom_idx1)
     atom2 = mol.GetAtomWithIdx(atom_idx2)
+    print(atom1)
+    print(atom2)
 
-    atom1_hybrid = convert_hybrid_to_int(str(atom1.GetHybridization()))
-    atom2_hybrid = convert_hybrid_to_int(str(atom2.GetHybridization()))
+    arr = info.get_most_to_least_sub_sp2()
 
-    if atom1_hybrid < atom2_hybrid:
-        return [atom_idx2, atom_idx1]
-    else: 
-        return [atom_idx1, atom_idx2]
+    print(arr)
+    return first_appearance(arr,atom_idx1,atom_idx2)
+    
 
-
+def first_appearance(arr, num1, num2):
+    # Find the indices of the two numbers in the array
+    index_num1 = arr.index(num1)
+    index_num2 = arr.index(num2)
+    
+    # Return a tuple where the first number is the one that appears first
+    if index_num1 < index_num2:
+        return (num1, num2)
+    else:
+        return (num2, num1)
 
 
 def convert_hybrid_to_int(hybrid):
